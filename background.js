@@ -93,7 +93,7 @@ async function checkAllPrices() {
 
   for (const product of products) {
     try {
-      const newPrice = await fetchPrice(product.url);
+      const newPrice = await fetchPrice(product.url, product.currentPrice);
       if (newPrice === null) continue;
 
       const oldPrice = product.currentPrice;
@@ -118,7 +118,7 @@ async function checkAllPrices() {
   await saveProducts(products);
 }
 
-async function fetchPrice(url) {
+async function fetchPrice(url, knownPrice = null) {
   try {
     const response = await fetch(url, {
       headers: {
@@ -129,16 +129,14 @@ async function fetchPrice(url) {
       },
     });
     const html = await response.text();
-    return extractPriceFromHTML(html, url);
+    return extractPriceFromHTML(html, url, knownPrice);
   } catch (e) {
     console.warn("[PriceWatch] Fetch error:", e);
     return null;
   }
 }
 
-function extractPriceFromHTML(html, url) {
-  const domain = new URL(url).hostname;
-
+function extractPriceFromHTML(html, url, knownPrice = null) {
   // Site-specific selectors (text patterns from raw HTML)
   const patterns = [
     // JSON-LD structured data (most reliable, used by many sites)
@@ -162,18 +160,57 @@ function extractPriceFromHTML(html, url) {
     /data-saleprice="([\d.]+)"/i,
   ];
 
+  const candidates = [];
+
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match) {
       const raw = match[1].replace(/,/g, "");
       const price = parseFloat(raw);
       if (!isNaN(price) && price > 0 && price < 1_000_000) {
-        return price;
+        candidates.push(price);
       }
     }
   }
 
-  return null;
+  if (candidates.length === 0) return null;
+
+  // If we have a known price, pick the candidate closest to it.
+  // This guards against sites that return prices in cents (e.g. 9800 instead of 98.00)
+  // or other outlier values scraped from unrelated parts of the page.
+  if (knownPrice !== null && knownPrice > 0) {
+    // Also consider the cents-divided version of each candidate
+    const expanded = [];
+    for (const c of candidates) {
+      expanded.push(c);
+      // If candidate looks like it might be in cents (integer, >100x known price), add /100 version
+      if (Number.isInteger(c) && c > knownPrice * 50) {
+        expanded.push(c / 100);
+      }
+    }
+
+    // Pick whichever is closest to the known price, but cap at 10x to
+    // avoid accepting a totally wrong value if the page structure changed
+    const reasonable = expanded.filter(
+      (p) => p >= knownPrice * 0.05 && p <= knownPrice * 10
+    );
+
+    if (reasonable.length > 0) {
+      return reasonable.reduce((best, p) =>
+        Math.abs(p - knownPrice) < Math.abs(best - knownPrice) ? p : best
+      );
+    }
+
+    // Nothing in a sane range — skip this check rather than save a bad price
+    console.warn(
+      `[PriceWatch] All candidates out of sane range vs known $${knownPrice}:`,
+      expanded
+    );
+    return null;
+  }
+
+  // No known price yet (first-time fetch) — just return the first match
+  return candidates[0];
 }
 
 // ── Notifications ────────────────────────────────────────────────────────────
