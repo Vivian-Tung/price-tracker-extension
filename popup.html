@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PriceWatch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">PriceWatch</span>
+      </div>
+      <button id="checkNowBtn" class="btn-icon" title="Check prices now">↻</button>
+    </header>
+
+    <div id="addSection" class="add-section">
+      <div class="detect-bar">
+        <div id="detectStatus" class="detect-status idle">
+          <span class="detect-dot"></span>
+          <span id="detectText">Visit a product page to track it</span>
+        </div>
+        <button id="trackBtn" class="btn-track" disabled>Track</button>
+      </div>
+      <div id="detectedProduct" class="detected-product hidden">
+        <div id="detectedName" class="detected-name"></div>
+        <div id="detectedPrice" class="detected-price"></div>
+      </div>
+    </div>
+
+    <div class="section-label">TRACKED ITEMS</div>
+
+    <div id="productList" class="product-list">
+      <div class="empty-state">
+        <div class="empty-icon">🛍</div>
+        <div>No items tracked yet</div>
+        <div class="empty-sub">Visit any product page and click Track</div>
+      </div>
+    </div>
+
+    <footer>
+      <span id="lastChecked" class="last-checked">Checks run weekly</span>
+      <span id="statusMsg" class="status-msg"></span>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
