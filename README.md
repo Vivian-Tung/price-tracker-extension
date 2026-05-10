@@ -21,6 +21,9 @@ Track prices across any online store and get browser notifications when they dro
 3. If a price is detected, you'll see it highlighted in green
 4. Click **Track** — done!
 
+https://github.com/user-attachments/assets/d826ceb4-ebc2-40b0-82a9-47c40f905757
+
+
 ---
 
 ## How Price Checking Works
