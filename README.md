@@ -5,12 +5,12 @@ Track prices across any online store and get browser notifications when they dro
 ---
 
 ## Installation
-
-1. Open Chrome and go to `chrome://extensions`
-2. Enable **Developer mode** (toggle in top-right corner)
-3. Click **"Load unpacked"**
-4. Select the `price-tracker-extension` folder
-5. The ◈ PriceWatch icon will appear in your toolbar
+1. Download code as zip file
+2. Open Chrome and go to `chrome://extensions`
+3. Enable **Developer mode** (toggle in top-right corner)
+4. Click **"Load unpacked"**
+5. Select the `price-tracker-extension` folder
+6. The ◈ PriceWatch icon will appear in your toolbar
 
 ---
 
