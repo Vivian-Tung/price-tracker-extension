@@ -1,4 +1,4 @@
-# PriceWatch — Chrome Extension
+# PriceWatch - Chrome Extension
 
 Track prices across any online store and get browser notifications when they drop.
 
@@ -62,3 +62,8 @@ If a price isn't detected on a page, the extension will show "No price found on 
 - Some sites (especially Amazon) may block background fetches due to bot protection. Prices are most reliably captured when you're actively visiting the page.
 - The extension stores all data locally in your browser — no data is sent anywhere.
 - Chrome requires a minimum alarm interval of 1 minute; the weekly check is set to 10,080 minutes (7 days).
+- Please wait for the page to fully load before clicking track otherwise it might not be able to retrive the price.
+
+## Find a bug or have a feature idea? 
+- If you find a bug? Please go to the `Issues` tab, click on `New issue` and report the bug. Appreciate it!
+- If you have a new feature idea, please go to the `Issues` tab, click on `New issue` and click `Blank issue` and put in your ideas! 
