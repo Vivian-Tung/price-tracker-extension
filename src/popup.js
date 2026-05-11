@@ -11,6 +11,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   document.getElementById("trackBtn").addEventListener("click", handleTrack);
   document.getElementById("checkNowBtn").addEventListener("click", handleCheckNow);
+
+  // Event delegation — one listener on the list handles all remove buttons,
+  // even after innerHTML is replaced by re-renders
+  document.getElementById("productList").addEventListener("click", async (e) => {
+    const btn = e.target.closest(".btn-remove");
+    if (!btn) return;
+    const url = btn.dataset.url;
+    await chrome.runtime.sendMessage({ type: "REMOVE_PRODUCT", url });
+    await renderProductList();
+    showStatus("Removed");
+  });
 });
 
 // ── Page Detection ────────────────────────────────────────────────────────────
@@ -89,7 +100,7 @@ async function handleTrack() {
     showStatus(result.message || "Already tracked");
   }
 
-  btn.textContent = "+ Track";
+  btn.textContent = "Track";
   btn.disabled = !detectedProduct;
 }
 
@@ -128,15 +139,6 @@ async function renderProductList() {
     .sort((a, b) => b.addedAt - a.addedAt)
     .map((p) => productCard(p))
     .join("");
-
-  list.querySelectorAll(".btn-remove").forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      const url = e.currentTarget.dataset.url;
-      await chrome.runtime.sendMessage({ type: "REMOVE_PRODUCT", url });
-      await renderProductList();
-      showStatus("Removed");
-    });
-  });
 }
 
 function productCard(p) {
