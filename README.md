@@ -10,7 +10,7 @@ Track prices across any online store and get browser notifications when they dro
 3. Enable **Developer mode** (toggle in top-right corner)
 4. Click **"Load unpacked"**
 5. Select the `price-tracker-extension` folder
-6. The ◈ PriceWatch icon will appear in your toolbar
+6. The ✿ PriceWatch icon will appear in your toolbar
 
 ---
 
@@ -19,9 +19,9 @@ Track prices across any online store and get browser notifications when they dro
 1. Navigate to any product page (Amazon, Best Buy, eBay, Walmart, etc.)
 2. Click the PriceWatch extension icon
 3. If a price is detected, you'll see it highlighted in green
-4. Click **Track** — done!
+4. Click **Track** - done!
 
-https://github.com/user-attachments/assets/d826ceb4-ebc2-40b0-82a9-47c40f905757
+https://github.com/user-attachments/assets/4b4e6eed-8f11-4a87-849f-0e169d62bcf5
 
 
 ---
@@ -30,7 +30,8 @@ https://github.com/user-attachments/assets/d826ceb4-ebc2-40b0-82a9-47c40f905757
 
 - Prices are checked **once a week** automatically (via Chrome alarms)
 - You can also click the **↻** button in the popup to check right now
-- When a price **drops** below what you originally tracked, you'll get a Chrome browser notification instantly
+- When a price **drops** below what you originally tracked, you'll get a Chrome browser notification instantly (make sure you allow notifcations from Chrome)
+<img width="359" height="464" alt="Screenshot 2026-05-11 at 1 22 59 PM" src="https://github.com/user-attachments/assets/c722b51c-5814-4fbf-a564-9038ad3f927a" />
 
 ---
 
@@ -44,6 +45,7 @@ PriceWatch uses multiple extraction strategies that work across most shopping si
 - **Site-specific selectors** for Amazon, Best Buy, Walmart, Target, eBay
 
 If a price isn't detected on a page, the extension will show "No price found on this page."
+<img width="2934" height="1706" alt="image" src="https://github.com/user-attachments/assets/76559e4d-aa51-43a7-a9d6-0f0e8c71e395" />
 
 ---
 
@@ -51,6 +53,7 @@ If a price isn't detected on a page, the extension will show "No price found on 
 
 - Hover over any tracked item to reveal the **✕ remove** button
 - Items show current price, original price, % drop, and when they were last checked
+<img width="362" height="472" alt="image" src="https://github.com/user-attachments/assets/76598418-fc2a-4fd5-8a36-c3225637d5c6" />
 
 ---
 
