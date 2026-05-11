@@ -88,34 +88,45 @@ async function removeProduct(url) {
 async function checkAllPrices() {
   const products = await getProducts();
   if (products.length === 0) return;
-
+ 
   console.log(`[PriceWatch] Checking ${products.length} products...`);
-
+ 
   for (const product of products) {
     try {
       const newPrice = await fetchPrice(product.url, product.currentPrice);
       if (newPrice === null) continue;
-
+ 
       const oldPrice = product.currentPrice;
       product.lastChecked = Date.now();
       product.history.push({ price: newPrice, timestamp: Date.now() });
-
+ 
       if (newPrice < product.lowestPrice) {
         product.lowestPrice = newPrice;
       }
-
+ 
       if (newPrice < oldPrice) {
         const drop = (((oldPrice - newPrice) / oldPrice) * 100).toFixed(1);
         notifyPriceDrop(product, oldPrice, newPrice, drop);
       }
-
+ 
       product.currentPrice = newPrice;
     } catch (err) {
       console.warn(`[PriceWatch] Failed to check ${product.url}:`, err);
     }
   }
-
+ 
   await saveProducts(products);
+  await updateBadge(products);
+}
+
+async function updateBadge(products) {
+  const dropped = products.filter(p => p.currentPrice < p.originalPrice).length;
+  if (dropped > 0) {
+    chrome.action.setBadgeText({ text: String(dropped) });
+    chrome.action.setBadgeBackgroundColor({ color: "#7DC4A0" });
+  } else {
+    chrome.action.setBadgeText({ text: "" });
+  }
 }
 
 async function fetchPrice(url, knownPrice = null) {

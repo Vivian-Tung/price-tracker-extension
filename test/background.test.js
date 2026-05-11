@@ -25,6 +25,10 @@ global.chrome = {
   tabs: {
     create: vi.fn((opts) => createdTabs.push(opts)),
   },
+  action: {
+    setBadgeText: vi.fn(),
+    setBadgeBackgroundColor: vi.fn(),
+  },
 };
 
 // ── Load functions from background.js ───────────────────────────────────────
@@ -97,6 +101,16 @@ async function getProducts() {
 
 async function saveProducts(products) {
   await chrome.storage.local.set({ products });
+}
+
+async function updateBadge(products) {
+  const dropped = products.filter(p => p.currentPrice < p.originalPrice).length;
+  if (dropped > 0) {
+    chrome.action.setBadgeText({ text: String(dropped) });
+    chrome.action.setBadgeBackgroundColor({ color: "#7DC4A0" });
+  } else {
+    chrome.action.setBadgeText({ text: "" });
+  }
 }
 
 async function addProduct(product) {
@@ -492,6 +506,23 @@ describe("price drop detection", () => {
     const notified = simulateCheck(product, 79.99);
     expect(notified).toHaveLength(1);
     expect(chrome.notifications.create).toHaveBeenCalledTimes(1);
+  });
+
+  test("updates badge when price drops", async () => {
+    const products = [
+      makeStoredProduct({ currentPrice: 79.99, originalPrice: 98 }),
+    ];
+    await updateBadge(products);
+    expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: "1" });
+    expect(chrome.action.setBadgeBackgroundColor).toHaveBeenCalledWith({ color: "#7DC4A0" });
+  });
+
+  test("clears badge when no price drops", async () => {
+    const products = [
+      makeStoredProduct({ currentPrice: 98, originalPrice: 98 }),
+    ];
+    await updateBadge(products);
+    expect(chrome.action.setBadgeText).toHaveBeenCalledWith({ text: "" });
   });
 
   test("does NOT notify when price stays the same", () => {
