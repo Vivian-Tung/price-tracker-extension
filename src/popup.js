@@ -89,7 +89,7 @@ async function handleTrack() {
     showStatus(result.message || "Already tracked");
   }
 
-  btn.textContent = "Track";
+  btn.textContent = "+ Track";
   btn.disabled = !detectedProduct;
 }
 

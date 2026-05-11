@@ -1,20 +1,20 @@
 /* popup.css — PriceWatch */
 
 :root {
-  --bg: #0d0d0d;
-  --surface: #161616;
-  --surface2: #1e1e1e;
-  --border: #2a2a2a;
-  --accent: #c8f135;
-  --accent-dim: rgba(200, 241, 53, 0.12);
-  --red: #ff4d4d;
-  --red-dim: rgba(255, 77, 77, 0.12);
-  --text: #f0f0f0;
-  --text-muted: white;
-  --text-sub: white;
-  --font-display: 'Syne', sans-serif;
-  --font-mono: 'DM Mono', monospace;
-  --radius: 4px;
+  --bg: #FDF6EC;
+  --surface: #FFFAF4;
+  --surface2: #FFF0E8;
+  --border: #F0D9C8;
+  --accent: #B8A9E8;
+  --accent-dim: #F0ECFB;
+  --price-drop: #7DC4A0;
+  --price-drop-dim: #EAF7F0;
+  --text: #271c1c;
+  --text-muted: #8c7265;
+  --text-sub: #ab968c;
+  --font-display: 'Nunito', sans-serif;
+  --font-mono: 'Quicksand', monospace;
+  --radius: 8px;
 }
 
 * {
@@ -58,7 +58,8 @@ header {
 
 .logo-icon {
   color: var(--accent);
-  font-size: 18px;
+  font-size: 20px;
+  align-items: center;
   line-height: 1;
   animation: pulse 3s ease-in-out infinite;
 }
@@ -79,10 +80,10 @@ header {
 .btn-icon {
   background: none;
   border: 1px solid var(--border);
-  color: var(--text-muted);
+  color: var(--accent);
   width: 28px;
   height: 28px;
-  border-radius: var(--radius);
+  border-radius: 32px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -164,7 +165,7 @@ header {
   color: #000;
   border: none;
   padding: 6px 14px;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font-family: var(--font-display);
   font-size: 12px;
   font-weight: 700;
@@ -175,7 +176,7 @@ header {
 }
 
 .btn-track:hover:not(:disabled) {
-  background: #d9ff3d;
+  background: var(--accent-dim);
   transform: translateY(-1px);
 }
 
@@ -264,6 +265,8 @@ header {
   border-bottom: 1px solid var(--border);
   transition: background 0.15s;
   position: relative;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(180, 140, 120, 0.2);
 }
 
 .product-card:hover {
@@ -318,11 +321,11 @@ header {
 .price-drop-badge {
   font-size: 12px;
   font-weight: 500;
-  background: var(--red-dim);
-  color: var(--red);
+  background: var(--price-drop-dim);
+  color: var(--price-drop);
   padding: 1px 5px;
-  border-radius: 2px;
-  border: 1px solid rgba(255, 77, 77, 0.2);
+  border-radius: 999px;
+  border: 1px solid var(--price-drop);
 }
 
 .price-no-drop {
@@ -348,12 +351,12 @@ header {
 }
 
 .btn-remove {
-  background: none;
-  border: 1px solid var(--border);
+  background: #F5E0D8;
   color: var(--text-sub);
   width: 22px;
   height: 22px;
-  border-radius: 2px;
+  border-radius: 999px;
+  border: none;
   cursor: pointer;
   font-size: 12px;
   display: flex;

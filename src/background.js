@@ -183,9 +183,13 @@ function extractPriceFromHTML(html, url, knownPrice = null) {
     const expanded = [];
     for (const c of candidates) {
       expanded.push(c);
-      // If candidate looks like it might be in cents (integer, >100x known price), add /100 version
+      // If candidate looks like it might be in cents (integer, >50x known price),
+      // add /100 version — but only if that result is actually close to knownPrice
       if (Number.isInteger(c) && c > knownPrice * 50) {
-        expanded.push(c / 100);
+        const asCents = c / 100;
+        if (asCents >= knownPrice * 0.5 && asCents <= knownPrice * 2) {
+          expanded.push(asCents);
+        }
       }
     }
 
@@ -219,7 +223,7 @@ function notifyPriceDrop(product, oldPrice, newPrice, dropPercent) {
   const currency = product.currency || "$";
   chrome.notifications.create(`drop-${Date.now()}`, {
     type: "basic",
-    iconUrl: "icons/icon128.png",
+    iconUrl: chrome.runtime.getURL("icons/icon128.png"),
     title: `📉 Price Drop: ${product.name}`,
     message: `${currency}${oldPrice.toFixed(2)} → ${currency}${newPrice.toFixed(2)} (${dropPercent}% off!)`,
     priority: 2,
